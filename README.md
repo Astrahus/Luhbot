@@ -11,3 +11,6 @@ A bot and test case using Twitch API and SDK for make a bot
 
 ### Discuss about dev
 - http://discuss.dev.twitch.tv/
+
+### passport-twitch repository
+- https://github.com/Schmoopiie/passport-twitch
