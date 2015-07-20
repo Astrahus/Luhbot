@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cookieSession({secret:'as65d4gf560dsa5e98cqe11'}));
 app.use(bodyParser.urlencoded({extended: true}));
+//TODO validar sessions e fazer com que caso exista sessão, o user n precisa logar denovo
 app.use(session({
   genid: function (req) {
     return uid(15);
