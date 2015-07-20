@@ -1,10 +1,21 @@
 html
   head
     title Luhbot
-    link(rel="css/materialize.min.css", media="screen,projection")
+    link(href="css/materialize.min.css", media="all", rel="stylesheet", type="text/css")
+    link(href="vendor/mdi/css/materialdesignicons.min.css", media="all", rel="stylesheet", type="text/css")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
 
   body
+    nav(class="purple lighten-1")
+      div(class="nav-wrapper")
+        a(href="#", class="brand-logo left") Luhbot
+        ul(id="nav-mobile", class="right hide-on-med-and-down")
+          li
+            a(href="#start") Comece agora!
+          li
+            a(href="#aboutUs") Quem somos?
+          li
+            a(href="#helpUs") Quer ajudar?
     block body
     script(src="vendor/jquery/dist/jquery.min.js")
     script(src="js/materialize/bin/materialize.min.js")
