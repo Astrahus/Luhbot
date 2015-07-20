@@ -1,0 +1,25 @@
+{
+  "name": "Luhbot",
+  "version": "0.0.1",
+  "homepage": "https://github.com/GreenLabsTech/Luhbot",
+  "authors": [
+    "Alisson Desandro Bovenzo <adbovenzo@gmail.com>"
+  ],
+  "description": "A bot for twitch.tv",
+  "main": "./bin/www",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.4.3",
+    "angular-ui-router": "~0.2.15",
+    "materialize": "~0.97.0",
+    "socket.io-client": "~1.3.6",
+    "jquery": "~2.1.4"
+  }
+}
