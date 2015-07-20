@@ -1,1 +1,3 @@
-console.log("that's works")
+function connect(){
+  window.location = '/auth/twitch'
+}
