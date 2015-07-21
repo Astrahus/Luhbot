@@ -7,8 +7,8 @@ var passport = require('passport'),
 
 passport.use(new twitchStrategy({
     clientID: '5ly77uvih89ugnp10vryol48pqlm6no',
-    clientSecret: 'bnei1h59ilxsp4hmemyezgdgy00fawu',
-    callbackURL: "http://localhost:3000/auth/twitch/callback",
+    clientSecret:'bnei1h59ilxsp4hmemyezgdgy00fawu',
+    callbackURL:"http://189.78.39.235:3000/auth/twitch/callback",
     scope: [
       "user_read",
       // "user_subscriptions",
@@ -17,34 +17,30 @@ passport.use(new twitchStrategy({
       // "user_blocks_edit",
       // "user_blocks_read",
       // "channel_check_subscription",
-      // "chat_login"
-
+      "chat_login"
     ]
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOne({twitchId: profile.id}, function(err, user){
-      if(err){
-        console.log('error', err);
-        done(err,null);
-      }
-      if(!user){
-        user = {
-          twitchId: profile.id,
-          twitchUser : profile.username,
-          displayName: profile.displayName,
-          provider: 'twitch',
-          email: profile.email
+    process.nextTick(function(){
+      User.findOne({twitchId: profile.id}, function(err, user){
+        if(err){
+          return done(err,null);
         }
-        User.create(user,function(err,doc){
-          if(err){
-            console.log('error',err);
-            done(err,null);
-          }
-          done(doc,null);
-        })
-      }
-      done(null,null);
-    })
+        if(!user){
+          user = {
+            twitchId: profile.id,
+            twitchUser : profile.username,
+            displayName: profile.displayName,
+            provider: 'twitch',
+            email: profile.email
+          };
+          User.create(user,function(err,doc){
+            return done(err,doc)
+          });
+        }
+        return done(err,user);
+      });
+    });
   }
 ));
 //serializers
@@ -52,8 +48,12 @@ passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+// passport.deserializeUser(function(user, done) {
+//   done(null, user);
+// });
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
 });
-
 module.exports = passport;

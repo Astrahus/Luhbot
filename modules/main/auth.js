@@ -2,16 +2,19 @@ var express = require('express');
 var router = express.Router();
 var passport = require('../../config/passport');
 
-router.get('/twitch',passport.authenticate('twitchtv'));
+router.get('/twitch',passport.authenticate('twitchtv',{session:true}));
 
-router.get('/twitch/callback',function(req, res, next){
-  passport.authenticate('twitchtv',function(err,user,info){
-    if(err) console.log('err',err);
-    if(!user) console.log('No user', user);
-    if(info) console.log(info);
+router.get('/twitch/callback',
+  passport.authenticate('twitchtv', { failureRedirect: '/erro' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/dashboard');
+  }
+);
 
-    res.json(user);
-  })(req,res)
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
 });
 
 module.exports = router;

@@ -18,12 +18,10 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public','img','favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cookieSession({secret:'as65d4gf560dsa5e98cqe11'}));
+app.use(bodyParser.json());
+app.use(cookieSession({secret:'miau'}));
 app.use(bodyParser.urlencoded({extended: true}));
-//TODO validar sessions e fazer com que caso exista sessão, o user n precisa logar denovo
 app.use(session({
   genid: function (req) {
     return uid(15);
@@ -34,7 +32,7 @@ app.use(session({
     expires: 24*60*60*1000
   },
   resave : false,
-  saveUninitialized: true
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,11 +52,13 @@ app.use(function (req,res,next){
 var routes = {};
 routes.main = require('./modules/main/index');
 routes.auth = require('./modules/main/auth');
+routes.dashboard = require('./modules/dashboard/routes');
 var api = {};
 api.users = require('./modules/users/api/routes');
 
 app.use('/', routes.main);
 app.use('/auth',routes.auth);
+app.use('/dashboard',routes.dashboard);
 //Api
 app.use('/api/users',api.users);
 
