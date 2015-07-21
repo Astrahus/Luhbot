@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   res.render('main/views/home');
 });
 
-router.get('/expose/:module/template',function(req, res, next){
+router.get('/expose/:module/:template',function(req, res, next){
   res.render(req.params.module + '/views/' + req.params.template);
 });
 

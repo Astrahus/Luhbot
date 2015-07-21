@@ -7,8 +7,7 @@ router.get('/twitch',passport.authenticate('twitchtv',{session:true}));
 router.get('/twitch/callback',
   passport.authenticate('twitchtv', { failureRedirect: '/erro' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/dashboard');
+    res.redirect('/dashboard#/');
   }
 );
 

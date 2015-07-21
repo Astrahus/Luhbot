@@ -3,7 +3,7 @@ var express = require('express'),
   passport = require('../../config/passport')
 
 router.get('/',function(req, res, next){
-  res.render('dashboard/views/index');
+  res.render('dashboard/views/layout');
 });
 
 module.exports = router;
