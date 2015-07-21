@@ -5,4 +5,7 @@ angular.module('luhbot',[
 .config(function($urlRouterProvider){
   $urlRouterProvider.otherwise('/dashboard');
 })
+.factory('socketIO',function(){
+  
+})
 .run()
