@@ -4,6 +4,7 @@ var express = require('express'),
 
 router.get('/',function(req, res, next){
   res.render('dashboard/views/layout');
+  console.log(req.session.passport);
 });
 
 module.exports = router;

@@ -1,6 +1,7 @@
 angular.module('dashboard',[
   'dashboard.controllers',
-  'dashboard.services'
+  'dashboard.services',
+  'dashboard.directives'
 ])
 
 .config(function($stateProvider){

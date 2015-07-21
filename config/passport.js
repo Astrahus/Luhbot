@@ -8,7 +8,7 @@ var passport = require('passport'),
 passport.use(new twitchStrategy({
     clientID: '5ly77uvih89ugnp10vryol48pqlm6no',
     clientSecret:'bnei1h59ilxsp4hmemyezgdgy00fawu',
-    callbackURL:"http://189.78.39.235:3000/auth/twitch/callback",
+    callbackURL:"http://localhost:3000/auth/twitch/callback",
     scope: [
       "user_read",
       // "user_subscriptions",

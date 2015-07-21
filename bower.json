@@ -21,6 +21,7 @@
     "materialize": "~0.97.0",
     "socket.io-client": "~1.3.6",
     "jquery": "~2.1.4",
-    "mdi": "~1.1.70"
+    "mdi": "~1.1.70",
+    "multiline": "~1.0.2"
   }
 }

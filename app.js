@@ -39,14 +39,18 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //middleware inactive in first step
-/*
+
 app.use(function (req,res,next){
-  if(req.path.split('/')[1] === 'api' && !req.user){
-    res.status(401).send({success: false, message: 'Unlogged user'});
+  if((req.path.split('/')[1] === 'api' ||req.path.split('/')[1] === 'dashboard')&& !req.session.passport.user){
+    res.redirect('/');
+  }
+  console.log(req.path.split('/'))
+  if(req.path.split('/')[1] === '' && req.session.passport.user){
+    res.redirect('/dashboard#/');
   }
   next();
 });
-*/
+
 
 //routes
 var routes = {};
@@ -55,12 +59,14 @@ routes.auth = require('./modules/main/auth');
 routes.dashboard = require('./modules/dashboard/routes');
 var api = {};
 api.users = require('./modules/users/api/routes');
+api.irc = require('./modules/irc/index');
 
 app.use('/', routes.main);
 app.use('/auth',routes.auth);
 app.use('/dashboard',routes.dashboard);
 //Api
 app.use('/api/users',api.users);
+app.use('/api/irc',api.irc);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
