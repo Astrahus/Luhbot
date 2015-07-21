@@ -4,7 +4,7 @@ var ctrl = require('./controllers');
 
 router.get('/',function(req,res,next){
   console.log(req.session.passport)
-})
+});
 
 
 module.exports = router;

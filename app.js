@@ -44,7 +44,6 @@ app.use(function (req,res,next){
   if((req.path.split('/')[1] === 'api' ||req.path.split('/')[1] === 'dashboard')&& !req.session.passport.user){
     res.redirect('/');
   }
-  console.log(req.path.split('/'))
   if(req.path.split('/')[1] === '' && req.session.passport.user){
     res.redirect('/dashboard#/');
   }
