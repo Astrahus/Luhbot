@@ -1,7 +1,8 @@
 var passport = require('passport'),
   bCrypt = require('bcrypt-nodejs'),
   twitchStrategy = require('passport-twitchtv').Strategy,
-  User = require('../modules/users/model');
+  User = require('../modules/users/model'),
+  redis = require('./redis');
 
 ///////////////////// Strategies ///////////////////////
 
@@ -21,8 +22,8 @@ passport.use(new twitchStrategy({
     ]
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile)
     process.nextTick(function(){
+      redis.set(profile.id + '-token', accessToken);
       User.findOne({twitchId: profile.id}, function(err, user){
         if(err){
           return done(err,null);

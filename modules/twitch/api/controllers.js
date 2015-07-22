@@ -1,9 +1,8 @@
 var request = require('request');
-var headers = {Accept: 'application/vnd.twitchtv.v3+json'};
-var defaultUrl = 'https://api.twitch.tv/kraken/';
 var User = require('../../users/model');
-
-
+var redis = require('../../../config/redis');
+var defaultUrl = 'https://api.twitch.tv/kraken/';
+var headers = {Accept: 'application/vnd.twitchtv.v3+json'};
 module.exports = {
   updateUser : function(req, res, next){
     request({
@@ -22,6 +21,21 @@ module.exports = {
       if(err){
         throw new Error(err);
       }
+    });
+  },
+  getSubscriptions: function(req,res,next){
+    redis.get(req.session.passport.user.twitchId +'-token', function(err, reply){
+      headers.Authorization ='OAuth ' + reply.toString();
+      request({
+        url:defaultUrl+ 'channels/' + req.session.passport.user.twitchUser + '/subscriptions',
+        headers: headers
+      },function(err,response,body){
+        body = JSON.parse(body);
+        if(err || response.statusCode != 200){
+          console.log('Erro', body.error);
+        };
+        res.json(body);
+      });
     });
   }
 }

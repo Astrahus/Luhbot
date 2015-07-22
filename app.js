@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./config/db');
+var redis = require('./config/redis');
 var session =  require('express-session');
 var cookieSession = require('cookie-session');
 var passport = require('./config/passport.js');
