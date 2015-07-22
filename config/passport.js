@@ -5,7 +5,6 @@ var passport = require('passport'),
   redis = require('./redis');
 
 ///////////////////// Strategies ///////////////////////
-
 passport.use(new twitchStrategy({
     clientID: process.env.LUHBOT_TWITCH_CLIENT_ID || '5ly77uvih89ugnp10vryol48pqlm6no',
     clientSecret: process.env.LUHBOT_TWITCH_SECRET || 'bnei1h59ilxsp4hmemyezgdgy00fawu',

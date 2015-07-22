@@ -11,8 +11,13 @@ var _ctrl = {
     });
   },
   getOne: function(req, res, next){
-    //TODO Quando passar um ID na rota, deve retornar apenas um usuario
-    res.status(501).end();
+    User.findOne({_id:req.params.id},function(err,doc){
+      if(err){
+        res.status(500).json({error:err});
+        return;
+      }
+      res.json(doc);
+    });
   },
   createUser: function(req, res, next){
     User.create(req.body,function(err, doc){
