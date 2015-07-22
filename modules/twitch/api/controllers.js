@@ -19,7 +19,7 @@ module.exports = {
         });
       }
       if(err){
-        throw new Error(err);
+        console.log(err);
       }
     });
   },
@@ -32,7 +32,7 @@ module.exports = {
       },function(err,response,body){
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
-          console.log('Erro', body.error);
+          console.log(body.error)
         };
         res.json(body);
       });

@@ -69,20 +69,15 @@ client.addListener('chat',function(channel,user,message){
 
 module.exports = {
   connect : function(req,res,next){
-    try{
-      if(!statusLuhbot) {
-        client.connect().then(function(){
-          statusLuhbot = true;
-        });
-        client.join(req.session.passport.user.twitchUser);
-        res.status(200).json({msg: 'Conectando Luhbot'});
-        return;
-      }
-      res.json({msg:"Luhbot ja está conectado"});
-    }catch(Exception){
-      res.status(500).json({msg:"ocorreu um erro na conexão"})
-      throw new Error(Exception);
+    if(!statusLuhbot) {
+      client.connect().then(function(){
+        statusLuhbot = true;
+      });
+      client.join(req.session.passport.user.twitchUser);
+      res.status(200).json({msg: 'Conectando Luhbot'});
+      return;
     }
+    res.json({msg:"Luhbot ja está conectado"});
   },
   disconnect : function(req,res,next){
     if(!statusLuhbot){
