@@ -16,7 +16,7 @@ var _ctrl = {
         res.status(500).json({error:err});
         return;
       }
-      res.json(doc);
+      res.status(200).json(doc);  
     });
   },
   createUser: function(req, res, next){
