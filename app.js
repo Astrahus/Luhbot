@@ -57,8 +57,8 @@ routes.auth = require('./modules/main/auth');
 routes.dashboard = require('./modules/dashboard/routes');
 var api = {};
 api.users = require('./modules/users/api/routes');
-api.irc = require('./modules/irc/index');
-
+api.irc = require('./modules/irc/api/routes');
+api.twitch = require('./modules/twitch/api/routes');
 var io = require('./config/io.js')
 
 app.use('/', routes.main);
@@ -67,6 +67,7 @@ app.use('/dashboard',routes.dashboard);
 //Api
 app.use('/api/users',api.users);
 app.use('/api/irc',api.irc);
+app.use('/api/twitch',api.twitch);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

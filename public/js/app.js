@@ -17,6 +17,42 @@ angular.module('luhbot',[
     listenIO : listenIO
   }
 })
+.factory('BOT',function($http,Toasts){
+  function connect(){
+    $http.get('/api/irc/turn/on')
+      .success(function(data,status){
+        Toasts.makeToast(data.msg)
+      })
+      .error(function(data,status){
+        Toasts.makeToast(data.msg)
+      });
+  }
+
+  function disconnect(){
+    $http.get('/api/irc/turn/off')
+      .success(function(data,status){
+        Toasts.makeToast(data.msg)
+      })
+      .error(function(data,status){
+        Toasts.makeToast(data.msg)
+      });
+  }
+  function ping(){
+    $http.get('/api/irc/ping')
+      .success(function(data,status){
+        Toasts.makeToast(data.msg)
+      })
+      .error(function(data,status){
+        Toasts.makeToast(data.msg)
+      });
+  }
+
+  return {
+    connect : connect,
+    disconnect: disconnect,
+    ping : ping
+  }
+})
 .config(function($urlRouterProvider){
 
   $urlRouterProvider.otherwise('/dashboard');

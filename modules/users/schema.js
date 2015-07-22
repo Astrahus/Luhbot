@@ -2,12 +2,13 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 module.exports = new Schema({
-  name: String,
-  displayName : String,
-  twitchId: String,
-  twitchUser : String,
-  email: String,
+  name: {type: String},
+  displayName : {type: String},
+  twitchId: {type: String},
+  twitchUser : {type: String},
+  email: {type: String},
   commands: [],
-  provider: String,
-  created: {type: Date, default: Date.now}
+  provider: {type: String},
+  created: {type: Date, default: Date.now},
+  bio: {type:String}
 });

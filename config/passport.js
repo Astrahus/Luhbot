@@ -11,16 +11,17 @@ passport.use(new twitchStrategy({
     callbackURL:"http://localhost:3000/auth/twitch/callback",
     scope: [
       "user_read",
-      // "user_subscriptions",
-      // "channel_subscriptions",
-      // "user_follows_edit",
-      // "user_blocks_edit",
-      // "user_blocks_read",
-      // "channel_check_subscription",
+      "user_subscriptions",
+      "channel_subscriptions",
+      "user_follows_edit",
+      "user_blocks_edit",
+      "user_blocks_read",
+      "channel_check_subscription",
       "chat_login"
     ]
   },
   function(accessToken, refreshToken, profile, done) {
+    console.log(profile)
     process.nextTick(function(){
       User.findOne({twitchId: profile.id}, function(err, user){
         if(err){
@@ -32,7 +33,8 @@ passport.use(new twitchStrategy({
             twitchUser : profile.username,
             displayName: profile.displayName,
             provider: 'twitch',
-            email: profile.email
+            email: profile.email,
+            bio: profile.bio
           };
           User.create(user,function(err,doc){
             return done(err,doc)
@@ -48,12 +50,8 @@ passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
-// passport.deserializeUser(function(user, done) {
-//   done(null, user);
-// });
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function(user, done) {
+  done(null, user);
 });
+
 module.exports = passport;
