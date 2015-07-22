@@ -6,10 +6,11 @@ var passport = require('passport'),
 
 ///////////////////// Strategies ///////////////////////
 
+var LuhbotCallBackURL = process.env.LUHBOT_TWITCH_CB || "http://localhost:3000/auth/twitch/callback";
 passport.use(new twitchStrategy({
     clientID: '5ly77uvih89ugnp10vryol48pqlm6no',
     clientSecret:'bnei1h59ilxsp4hmemyezgdgy00fawu',
-    callbackURL:"http://localhost:3000/auth/twitch/callback",
+    callbackURL: LuhbotCallBackURL,
     scope: [
       "user_read",
       "user_subscriptions",
