@@ -6,29 +6,46 @@ var request = require('request');
 var toasts = io.of('/toasts').on('connection',function(socket){
   return socket;
 });
-
 var statusLuhbot = false;
+
+client.connect().then(function(){
+  statusLuhbot = true;
+  console.log('luhbot conectado');
+});
+
 client.addListener('connected',function(adress,port){
   toasts.emit('newMessage',{msg:'Conectado'});
 });
+
 client.addListener('disconnected',function(reason){
   toasts.emit('newMessage',{msg:'Luhbot desconectado'});
   console.log('desconectado',reason)
 });
+
 client.addListener('connectfail',function(){
   toasts.emit('newMessage',{msg:'Luhbot não conseguiu se conectar'});
 });
+
 client.addListener('pong',function(l){
   statusLuhbot = l;
   toasts.emit('newMessage',{msg:'Latência luhbot :'+ statusLuhbot});
 });
+
 client.addListener('join',function(channel,username){
   client.say(channel, "Olar! sou a "+ username + " e vim amar vocês *-*");
   toasts.emit('newMessage',{msg:'Luhbot entrou na sala'});
 });
+
 client.addListener('chat',function(channel,user,message){
   if(client.utils.uppercase(message) >= 0.4){
     client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
+    return;
+  }
+  var re = new RegExp(/(http(s)?:\/\/)?\w{2,}\.\w{2,}(\.\w{2,})*/g);
+  if(re.test(message.toString())){
+    client.timeout(channel, user.username, 10).then(function(){
+      client.say(channel,'E da proxima vez, @' + user.username.toString() + ' vai mandar link na stream da sua avó!');
+    });
   }
   var msg = message.toLowerCase();
   switch(true){
@@ -63,31 +80,12 @@ client.addListener('chat',function(channel,user,message){
       client.say(channel,talks[index]);
       break;
     default:
+      console.log(message)
       // client.say(channel, '@'+user.username.toString() + ' disse ' + message.toString());
   }
 });
 
-module.exports = {
-  connect : function(req,res,next){
-    if(!statusLuhbot) {
-      client.connect().then(function(){
-        statusLuhbot = true;
-      });
-      client.join(req.session.passport.user.twitchUser);
-      res.status(200).json({msg: 'Conectando Luhbot'});
-      return;
-    }
-    res.json({msg:"Luhbot ja está conectado"});
-  },
-  disconnect : function(req,res,next){
-    if(!statusLuhbot){
-      res.json({msg:'Luhbot já está desconectado'});
-      return;
-    }
-    res.status(202).json({msg:'Desconectando luhbot'});
-    client.disconnect();
-    statusLuhbot = false;
-  },
+var _irc = {
   ping : function(req, res, next){
     if(!statusLuhbot){
       res.json({msg:'Luhbot está desconectado'});
@@ -95,5 +93,17 @@ module.exports = {
     }
     res.json({msg:'Enviando ping'});
     client.ping();
-  }
+  },
+  join: function(req, res, next){
+    if(!statusLuhbot){
+      res.json({msg:'Luhbot está desconectado'});
+      return;
+    }
+    client.join(req.session.passport.user.twitchUser).then(function(){
+      toasts.emit('newMessage',{msg:'Entrando na sala'});
+    });
+    res.status(202).end();
+  },
 }
+
+module.exports = _irc;
