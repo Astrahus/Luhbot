@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var ctrl = require('./controllers');
+var _ctrl = require('./controllers');
 
-router.get('/',function(req,res,next){
-  console.log(req.session.passport)
-});
-
+router.get('/ligar' ,_ctrl.conectar)
 
 module.exports = router;
