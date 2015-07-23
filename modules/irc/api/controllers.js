@@ -28,7 +28,7 @@ client.addListener('connectfail',function(){
 });
 
 client.addListener('pong',function(l){
-  toasts.emit('newMessage',{msg:'Latência luhbot :'+ statusLuhbot});
+  toasts.emit('newMessage',{msg:'Latência luhbot :'+ l});
 });
 
 client.addListener('join',function(channel,username){
