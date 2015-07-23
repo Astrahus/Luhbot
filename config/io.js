@@ -1,3 +1,3 @@
-var io = require('socket.io')(3001)
+var io = require('socket.io')(443)
 
 module.exports = io;
