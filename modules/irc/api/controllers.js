@@ -3,7 +3,7 @@ var io = require('../../../config/io');
 var _user = require('../../users/model');
 var twitch = require('../../twitch/api/controllers');
 var request = require('request');
-var profile = Number;
+var profile = 0;
 
 var toasts = io.of('/toasts').on('connection',function(socket){
   return socket;
