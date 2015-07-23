@@ -1,6 +1,7 @@
 var client = require('../../../config/irc');
 var io = require('../../../config/io');
 var _user = require('../../users/model');
+var twitch = require('../../twitch/api/controllers');
 var request = require('request');
 var profile = Number;
 
@@ -60,9 +61,14 @@ client.addListener('chat',function(channel,user,message){
       client.say(channel,"Seja um subscriber! Subscribers tem direito a sorteios de jogos da steam, prioridade para jogar na live e um teamspeak para falar com a Luhzinha.");
       break;
     case msg.split(' ').indexOf('!eu') >= 0:
-      _user.findOne({twitchId: profile}, {bio:1}, function(err,doc){
-        if(err){
-          throw new Error(err)
+      _user.findOne({twitchId: profile}, function(err,doc){
+        console.log(err,doc)
+        if(err || !doc ){
+          console.log(err);
+          return;
+        }
+        if(!doc.hasOwnProperty('bio')){
+          return;
         }
         client.say(channel, doc.bio);
       });
@@ -78,7 +84,7 @@ client.addListener('chat',function(channel,user,message){
         'Amanda?',
         'Romero brito?',
         'SAMU?!?',
-        'Seu **...'
+        'Seu **'
       ];
       var index = Math.floor(Math.random() * talks.length) ;
       client.say(channel,talks[index]);
