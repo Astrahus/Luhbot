@@ -126,6 +126,7 @@ var _irc = {
     client.disconnect();
     client.connect();
     client.join(profile || req.session.passport.user.twitchUser);
+    res.json({msg:"Reiniciando"});
   }
 }
 

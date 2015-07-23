@@ -10,10 +10,9 @@ angular.module('dashboard.directives',[])
             <i class="large material-icons">mode_edit</i>
           </a>
           <ul>
-            <li><a class="btn-floating red waves-effect waves-light" ng-click='ligar()'><i class="material-icons">insert_chart</i></i></a></li>
-            <li><a class="btn-floating yellow darken-1 waves-effect waves-light" ng-click='desligar()'><i class="material-icons">format_quote</i></a></li>
-            <li><a class="btn-floating green waves-effect waves-light" ng-click='ping()'><i class="material-icons">publish</i></a></li>
-            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+            <li><a class="btn-floating red waves-effect waves-light tooltiped" data-position="left" data-delay="50" data-tooltip="Ligar" ng-click='ligar()'><i class="material-icons">power_settings_new</i></i></a></li>
+            <li><a class="btn-floating yellow darken-1 waves-effect waves-light tooltiped" data-position="left" data-delay="50" data-tooltip="Reiniciar" ng-click='reiniciar()'><i class="material-icons">replay</i></a></li>
+            <li><a class="btn-floating green waves-effect waves-light tooltiped" data-position="left" data-delay="50" data-tooltip="Ping" ng-click='ping()'><i class="material-icons">settings_remote</i></a></li>
           </ul>
         </div>
       */
@@ -22,8 +21,8 @@ angular.module('dashboard.directives',[])
       scope.ligar = function(){
         BOT.connect();
       }
-      scope.desligar = function(){
-        BOT.disconnect()
+      scope.reiniciar = function(){
+        BOT.restart()
       }
       scope.ping = function(){
         BOT.ping();
