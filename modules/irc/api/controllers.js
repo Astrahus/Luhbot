@@ -84,7 +84,13 @@ client.addListener('chat',function(channel,user,message){
         'Amanda?',
         'Romero brito?',
         'SAMU?!?',
-        'Seu **'
+        'Seu **',
+        'Adriano? Alá Juliana! Seu **! Faz isso comigo não velho',
+        'Guarapari búzios, é minha arte!',
+        'Rave? RAVE? Felipe! Smith! Seu **',
+        '16, 18, quebro véi, quebro o meu braço! Quebroo o meu braço',
+        'minha vida? Cabô',
+        '5 quilometros?'
       ];
       var index = Math.floor(Math.random() * talks.length) ;
       client.say(channel,talks[index]);
