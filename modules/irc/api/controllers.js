@@ -3,7 +3,7 @@ var io = require('../../../config/io');
 var _user = require('../../users/model');
 var twitch = require('../../twitch/api/controllers');
 var request = require('request');
-var profile = Number;
+var profile = 0;
 
 var toasts = io.of('/toasts').on('connection',function(socket){
   return socket;
@@ -62,7 +62,6 @@ client.addListener('chat',function(channel,user,message){
       break;
     case msg.split(' ').indexOf('!eu') >= 0:
       _user.findOne({twitchId: profile}, function(err,doc){
-        console.log(err,doc)
         if(err || !doc ){
           console.log(err);
           return;
@@ -130,7 +129,10 @@ var _irc = {
     res.json({msg:'Luhbot foi desconectado'});
   },
   forceRestart: function(req, res, next){
-    res.status(501).end();
+    client.disconnect();
+    client.connect();
+    client.join(profile || req.session.passport.user.twitchUser);
+    res.json({msg:"Reiniciando"});
   }
 }
 

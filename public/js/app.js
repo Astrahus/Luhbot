@@ -47,9 +47,19 @@ angular.module('luhbot',[
       });
   }
 
+  function restart(){
+    $http.get('/api/irc/force')
+      .success(function(data,status){
+        Toasts.makeToast(data.msg)
+      })
+      .error(function(data,status){
+        Toasts.makeToast(data.msg)
+      });
+  }
+
   return {
     connect : connect,
-    disconnect: disconnect,
+    restart: restart,
     ping : ping
   }
 })
