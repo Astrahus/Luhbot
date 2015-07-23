@@ -1,6 +1,6 @@
 var express = require('express'),
-  router = express.Router(),
-  passport = require('../../config/passport')
+    router = express.Router(),
+    passport = require('../../config/passport');
 
 router.get('/',function(req, res, next){
   if(req.session.passport.user){
