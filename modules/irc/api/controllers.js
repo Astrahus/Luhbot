@@ -4,14 +4,13 @@ var _user = require('../../users/model');
 var twitch = require('../../twitch/api/controllers');
 var request = require('request');
 var profile = 0;
+var statusLuhbot = false;
 
 var toasts = io.of('/toasts').on('connection',function(socket){
   return socket;
 });
-var statusLuhbot = false;
 
 client.connect().then(function(){
-  statusLuhbot = true;
   console.log('luhbot conectado');
 });
 
@@ -29,7 +28,6 @@ client.addListener('connectfail',function(){
 });
 
 client.addListener('pong',function(l){
-  statusLuhbot = l;
   toasts.emit('newMessage',{msg:'Latência luhbot :'+ statusLuhbot});
 });
 
