@@ -60,7 +60,7 @@ client.addListener('chat',function(channel,user,message){
       client.say(channel,"Seja um subscriber! Subscribers tem direito a sorteios de jogos da steam, prioridade para jogar na live e um teamspeak para falar com a Luhzinha.");
       break;
     case msg.split(' ').indexOf('!eu') >= 0:
-      _user.findOne({twitchId: profile},{bio:1},function(err,doc){
+      _user.findOne({twitchId: profile}, {bio:1}, function(err,doc){
         if(err){
           throw new Error(err)
         }

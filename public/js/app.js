@@ -7,7 +7,7 @@ angular.module('luhbot',[
     Materialize.toast(message, 4000);
   }
   function listenIO(){
-    var messages = io.connect(window.location.origin +':443/toasts');
+    var messages = io.connect('http://' + window.location.hostname + ':7171/toasts');
     messages.on('newMessage',function(data){
       makeToast(data.msg);
     });
