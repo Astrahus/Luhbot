@@ -103,8 +103,8 @@ client.addListener('chat',function(channel,user,message){
 
 var _irc = {
   join: function(req, res, next){
-    if(!statusLuhbot){
-      res.json({msg:'Luhbot não está conectado'});
+    if(statusLuhbot){
+      res.json({msg:'Luhbot já está conectado'});
       return;
     }
     client.join(req.session.passport.user.twitchUser).then(function(){
