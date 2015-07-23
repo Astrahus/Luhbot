@@ -62,7 +62,6 @@ client.addListener('chat',function(channel,user,message){
       break;
     case msg.split(' ').indexOf('!eu') >= 0:
       _user.findOne({twitchId: profile}, function(err,doc){
-        console.log(err,doc)
         if(err || !doc ){
           console.log(err);
           return;
@@ -101,7 +100,7 @@ var _irc = {
       res.json({msg:'Luhbot não está conectado'});
       return;
     }
-    client.join(req.session.passport.user.twitchUser).then(function(){
+    client.join(profile || req.session.passport.user.twitchUser).then(function(){
       profile = req.session.passport.user.twitchId;
       toasts.emit('newMessage',{msg:'Entrando na sala'});
     });
@@ -124,7 +123,9 @@ var _irc = {
     res.json({msg:'Luhbot foi desconectado'});
   },
   forceRestart: function(req, res, next){
-    res.status(501).end();
+    client.disconnect();
+    client.connect();
+    client.join(profile || req.session.passport.user.twitchUser);
   }
 }
 
