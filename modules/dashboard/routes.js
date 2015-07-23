@@ -3,7 +3,11 @@ var express = require('express'),
   passport = require('../../config/passport')
 
 router.get('/',function(req, res, next){
-  res.render('dashboard/views/layout');
+  if(req.session.passport.user){
+    res.render('dashboard/views/layout');
+    return;
+  }
+  res.redirect('/');
 });
 
 module.exports = router;

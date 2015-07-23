@@ -42,11 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //middleware inactive in first step
 
 app.use(function (req,res,next){
-  if((req.path.split('/')[1] === 'api' || req.path.split('/')[1] === 'dashboard')&& !req.session.passport.user){
+  if(req.path.split('/')[1] === 'api' && !req.session.passport.user){
     res.redirect('/');
-  }
-  if(req.path.split('/')[1] === '' && req.session.passport.user){
-    res.redirect('/dashboard#/');
   }
   next();
 });
