@@ -80,7 +80,7 @@ client.addListener('chat',function(channel,user,message){
         'SAMU?!?',
         'Seu **...'
       ];
-      var index = Math.floor(Math.random() * 7) ;
+      var index = Math.floor(Math.random() * talks.length) ;
       client.say(channel,talks[index]);
       break;
     default:
@@ -91,8 +91,8 @@ client.addListener('chat',function(channel,user,message){
 
 var _irc = {
   join: function(req, res, next){
-    if(statusLuhbot){
-      res.json({msg:'Luhbot já está conectado'});
+    if(!statusLuhbot){
+      res.json({msg:'Luhbot não está conectado'});
       return;
     }
     client.join(req.session.passport.user.twitchUser).then(function(){
