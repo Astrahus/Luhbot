@@ -100,7 +100,7 @@ var _irc = {
       res.json({msg:'Luhbot não está conectado'});
       return;
     }
-    client.join(profile || req.session.passport.user.twitchUser).then(function(){
+    client.join(req.session.passport.user.twitchUser).then(function(){
       profile = req.session.passport.user.twitchId;
       toasts.emit('newMessage',{msg:'Entrando na sala'});
     });
