@@ -110,6 +110,7 @@ var _irc = {
     client.join(req.session.passport.user.twitchUser).then(function(){
       profile = req.session.passport.user.twitchId;
       toasts.emit('newMessage',{msg:'Entrando na sala'});
+      statusLuhbot = true;
     });
     res.status(202).end();
   },
