@@ -24,8 +24,8 @@ module.exports = {
     });
   },
   getSubscriptions: function(req,res,next){
-    redis.get(req.session.passport.user.twitchId +'-token', function(err, reply){
-      headers.Authorization ='OAuth ' + reply.toString();
+    redis.get(req.session.passport.user.twitchId, function(err, reply){
+      headers.Authorization ='OAuth ' + reply.token.toString();
       request({
         url:defaultUrl+ 'channels/' + req.session.passport.user.twitchUser + '/subscriptions',
         headers: headers

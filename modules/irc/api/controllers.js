@@ -2,6 +2,7 @@ var client = require('../../../config/irc');
 var io = require('../../../config/io');
 var _user = require('../../users/model');
 var request = require('request');
+var profile = Number;
 
 var toasts = io.of('/toasts').on('connection',function(socket){
   return socket;
@@ -37,6 +38,9 @@ client.addListener('join',function(channel,username){
 });
 
 client.addListener('chat',function(channel,user,message){
+  if(!statusLuhbot){
+    return false;
+  }
   if(client.utils.uppercase(message) >= 0.4){
     client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
     return;
@@ -56,7 +60,7 @@ client.addListener('chat',function(channel,user,message){
       client.say(channel,"Seja um subscriber! Subscribers tem direito a sorteios de jogos da steam, prioridade para jogar na live e um teamspeak para falar com a Luhzinha.");
       break;
     case msg.split(' ').indexOf('!eu') >= 0:
-      _user.findOne({twitchId: req.session.passport.user.twitchId},{bio:1},function(err,doc){
+      _user.findOne({twitchId: profile},{bio:1},function(err,doc){
         if(err){
           throw new Error(err)
         }
@@ -86,6 +90,17 @@ client.addListener('chat',function(channel,user,message){
 });
 
 var _irc = {
+  join: function(req, res, next){
+    if(statusLuhbot){
+      res.json({msg:'Luhbot já está conectado'});
+      return;
+    }
+    client.join(req.session.passport.user.twitchUser).then(function(){
+      profile = req.session.passport.user.twitchId;
+      toasts.emit('newMessage',{msg:'Entrando na sala'});
+    });
+    res.status(202).end();
+  },
   ping : function(req, res, next){
     if(!statusLuhbot){
       res.json({msg:'Luhbot está desconectado'});
@@ -94,16 +109,17 @@ var _irc = {
     res.json({msg:'Enviando ping'});
     client.ping();
   },
-  join: function(req, res, next){
+  disconnect: function(req, res, next){
     if(!statusLuhbot){
       res.json({msg:'Luhbot está desconectado'});
       return;
     }
-    client.join(req.session.passport.user.twitchUser).then(function(){
-      toasts.emit('newMessage',{msg:'Entrando na sala'});
-    });
-    res.status(202).end();
+    statusLuhbot = false;
+    res.json({msg:'Luhbot foi desconectado'});
   },
+  forceRestart: function(req, res, next){
+    res.status(501).end();
+  }
 }
 
 module.exports = _irc;
