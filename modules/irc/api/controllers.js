@@ -40,11 +40,11 @@ client.addListener('join',function(channel,username){
   alerts.to(profile).emit('newMessage',{msg:'Luhbot entrou na sala'});
 });
 
+client.mods('tunxlol').then(function(mods) {
+  console.log(mods);
+  // Do something else..
+});
 client.addListener('chat',function(channel,user,message){
-  client.mods(channel).then(function(mods) {
-    console.log(mods);
-    // Do something else..
-  });
   if(!statusLuhbot){
     return;
   }
