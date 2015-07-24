@@ -29,6 +29,7 @@ angular.module('luhbot',[
       .error(function(data,status){
         Toasts.makeToast(data.msg)
       });
+      $http.get('/api/twitch/update/user')
   }
   function disconnect(){
     $http.get('/api/irc/turn/off')
