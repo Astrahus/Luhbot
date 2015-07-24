@@ -8,7 +8,7 @@ var clientOptions = {
     options: {
         debug: true,
         debugIgnore: ['ping', 'chat', 'action'],
-        tc: 3
+        tc: 2
     },
     identity: {
         username: 'Luhbot',
