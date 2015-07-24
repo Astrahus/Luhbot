@@ -1,8 +1,4 @@
 var irc = require('twitch-irc');
-var io = require('./io');
-var toasts = io.of('/toasts').on('connection',function(socket){
-  return socket;
-});
 
 var clientOptions = {
     options: {

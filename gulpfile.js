@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var sassFiles = ['./public/sass/materialize.scss'];
+var sassDirectory = './public/sass/**/*.*';
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var _cssDir = './public/css';
@@ -15,7 +16,7 @@ gulp.task('compile:sass',function(){
 });
 
 gulp.task('sass:watcher',function(){
-  gulp.watch(sassFiles,['compile:sass']);
+  gulp.watch(sassDirectory,['compile:sass']);
 });
 
 gulp.task('watchers', ['sass:watcher'])

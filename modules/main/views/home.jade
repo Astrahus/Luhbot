@@ -1,12 +1,119 @@
 extends layout
 
 block body
-  div(class="container")
-  div(class="row center")
-    h1 Luhbot!
-      div.row.center
-        h3 O mangnifico bot para Twitch.TV
-    div(class="row center")
-      button(class="btn-large waves-effect waves-light purple twitch", onclick='connect()')
-        i(class="mdi mdi-twitch left")
-        span(class="right") Conectar
+  div(class="container row")
+    div(class="row center" id='start')
+      h1 Luhbot!
+        div.row.center
+          h3 O mangnifico bot para Twitch.TV
+      div(class="row center")
+        button(class="btn-large waves-effect waves-light purple twitch", onclick='connect()')
+          i(class="mdi mdi-twitch left")
+          span(class="right") Conectar
+      div.row
+  div(class='purple lighten-1 row  z-depth-2 relative m-bot-0')
+    div(class='row')
+    div(class='container center')
+      div(class='col s12 m4 l4')
+        p
+          i(class='material-icons medium grey-text text-lighten-5') vpn_key
+        h4(class='grey-text text-lighten-5') Segurança
+        p(class='grey-text text-lighten-5')
+          | Fique tranquilo, você está seguro !
+          br
+          | Suas informações como senha não são armazenadas em nossos bancos de dados.
+          | Todas as informações utilizadas são expressamente solicitadas antes à você !
+          br
+      div(class='col s12 m4 l4')
+        p
+          i(class='mdi mdi-lock-open-outline medium grey-text text-lighten-5')
+        h4(class='grey-text text-lighten-5') Código Aberto
+        p(class='grey-text text-lighten-5')
+          | Nosso código está disponivel para todos!
+          | Você pode ver em nosso repositório do Github todas as informações necessárias
+          | para contribuir e ajudar manter a Luhbot!
+      div(class='col s12 m4 l4')
+        p
+          i(class='material-icons medium grey-text text-lighten-5') live_help
+        h4(class='grey-text text-lighten-5')  Duvidas?
+        p(class='grey-text text-lighten-5')
+          | Você pode entrar em contato conosco a qualquer hora do dia (ou da noite!).
+          br
+          | Somos pessoas como você! Ficaremos felizes em tirar suas duvidas, conversar ou até mesmo tomar um café!
+    div(class='row')
+  div(class='row grey darken-3 m-bot-0')
+    div(class='row')
+    div(class='container center' id='aboutUs') 
+      h3(class='grey-text text-lighten-5') Contribuidores 
+      div(class='row')
+        div(class='col l7 hide-on-med-and-down')
+          div(class='me')
+            div(class='info left') 
+              span(class='info-texto grey-text text-lighten-5' style='font-size:20px') Criado e mantido por 
+              span(class='bottom-shadow-line')
+            div(class='image left')
+              a(href='http://www.github.com/alissonbovenzo')
+                img(src='img/github-circle.svg',class='circle shadow-with-overlay image-overlay-effect', width='100')
+                img(src='https://avatars.githubusercontent.com/u/2468539?v=3',class='circle ', width='100')
+            div(class='name left name-m-top')
+              span(class='grey-text text-lighten-5') Alisson Desandro Bovenzo
+              span(class='bottom-shadow-line')
+        div(class='col s12 m12 hide-on-large-only')
+          div(class='me')
+            div(class='info left') 
+              span(class='info-texto grey-text text-lighten-5' style='font-size:20px') Criado e mantido por 
+              span(class='bottom-shadow-line')
+            div(class='image left')
+              a(href=href='http://www.github.com/alissonbovenzo')
+                img(src='img/github-circle.svg',class='circle shadow-with-overlay image-overlay-effect', width='100')
+                img(src='https://avatars.githubusercontent.com/u/2468539?v=3',class='circle ', width='100')
+            div(class='name left name-m-top')
+              span(class='grey-text text-lighten-5') Alisson Desandro Bovenzo
+              span(class='bottom-shadow-line')
+        div(class='col s12 l5')
+          p "A Luhbot é um presente meu e dos contribuidores, para os streamers que se importam realmente com seus viewers.
+            | E devo um agradecimento especial a 
+            a(href='http://www.twitch.tv/luhzinhaluna', target='_blank') Lu Simioni 
+            | , pois sem a stream dela nada disso seria possível."
+  div(class='row grey darken-3 m-bot-0')
+    span(class='divider-full-line container')
+    div(class='row center')
+      h4 Obrigado à todos! vocês são essenciais para o projeto!
+    div(class='row')
+      div(id='contributors' class='container m-top-15')
+        div(class='first-slot contributor')
+  div(class='purple lighten-1 row relative m-bot-0')
+    div(class='row')
+    div(class='container center')
+      h4(class='grey-text text-lighten-5') Quer contribuir com o Projeto?
+      div(class='row')
+        div(class='col s12 m6 l6')
+          p
+            a(href='https://github.com/GreenLabsTech/Luhbot')
+              img(src='img/github-circle.svg', width='110' class='effect-shadow circle')
+          h4(class='grey-text text-lighten-5') Codificando!
+          p(class='grey-text text-lighten-5')
+            | Você pode nos ajudar desenvolvendo o projeto, o código é aberto!
+            | Caso você se sinta inseguro, pode contactar o mantenedor do projeto!
+            | Para acessar o repositório, basta clicar no octocat acima!
+        div(class='col s12 m6 l6')
+          p
+            a(href='https://github.com/GreenLabsTech/Luhbot')
+              img(src='img/coffee.svg', width='110' class='effect-shadow circle')
+          h4(class='grey-text text-lighten-5') Nos pagando um café!
+          p(class='grey-text text-lighten-5')
+            | Você também pode nos ajudar a manter nossos servidores e nossas xícaras de café cheias!
+            br
+            | Para isto, basta clicar na xícara de café e receberemos sua doação  assim que o processamento for finalizado!
+  footer(class='page-footer m-bot-0 purple lighten-1 m-top-0')
+    div(class='footer-copyright')
+      div(class='container')
+        a(class='grey-text text-lighten-4 right', href='http://www.github.com/alissonbovenzo')
+          i(class='fa fa-code') 
+          |  with  
+          i(class='fa fa-heart')
+          |  by 
+          span(class='bold-owner-name')  alissonbovenzo
+          
+          
+          
