@@ -63,6 +63,9 @@ client.addListener('chat',function(channel,user,message){
     case msg.split(' ').indexOf('!subscribers') >= 0:
       client.say(channel,"Seja um subscriber! Subscribers tem direito a sorteios de jogos da steam, prioridade para jogar na live e um teamspeak para falar com a Luhzinha.");
       break;
+    case msg.split(' ').indexOf('!patrocinador') >= 0:
+      client.say(channel," Quer comprar um jogo ou um console por um preço bacana? Entra aqui na loja LFX games e use o cupom LUHZINHA (tudo maiúsculo) e ganhe 10% de desconto na sua compra <3 http://www.lfxgames.com.br/");
+      break;
     case msg.split(' ').indexOf('!eu') >= 0:
     console.log('entrou')
       _user.findOne({twitchId: profile}, function(err,doc){
