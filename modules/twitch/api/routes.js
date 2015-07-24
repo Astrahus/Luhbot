@@ -4,5 +4,6 @@ var _ctrl = require('./controllers');
 
 router.get('/update/user', _ctrl.updateUser);
 router.get('/get/subscriptions', _ctrl.getSubscriptions);
+router.get('/get/moderators', _ctrl.getModerators);
 
 module.exports = router;

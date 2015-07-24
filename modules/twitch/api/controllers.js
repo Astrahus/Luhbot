@@ -37,5 +37,20 @@ module.exports = {
         res.json(body);
       });
     });
+  },
+  getModerators: function(req,res,next){
+    redis.hget(req.session.passport.user.twitchId,'token', function(err, reply){
+      headers.Authorization ='OAuth ' + reply;
+      request({
+        url:defaultUrl+ 'channels/' + req.session.passport.user.twitchUser + '/moderators',
+        headers: headers
+      },function(err,response,body){
+        body = JSON.parse(body);
+        if(err || response.statusCode != 200){
+          console.log(body.error)
+        };
+        res.json(body);
+      });
+    });
   }
 }
