@@ -46,8 +46,9 @@ client.addListener('chat',function(channel,user,message){
     return;
   }
   if(client.utils.uppercase(message) >= 0.8){
-    client.timeout(channel, user.username, 1);
-    client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
+    client.timeout(channel, user.username, 1).then(function(){
+      client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
+    })
     return;
   }
   var re = new RegExp(/(http(s)?:\/\/)?\w{2,}\.\w{2,}(\.\w{2,})*/g);
@@ -68,7 +69,6 @@ client.addListener('chat',function(channel,user,message){
       client.say(channel," Quer comprar um jogo ou um console por um preço bacana? Entra aqui na loja LFX games e use o cupom LUHZINHA (tudo maiúsculo) e ganhe 10% de desconto na sua compra <3 http://www.lfxgames.com.br/");
       break;
     case msg.split(' ').indexOf('!eu') >= 0:
-    console.log('entrou')
       _user.findOne({twitchId: profile}, function(err,doc){
         if(err || !doc ){
           console.log(err);
