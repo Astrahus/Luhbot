@@ -51,11 +51,10 @@ client.addListener('chat',function(channel,user,message){
     })
     return;
   }
+  //if link, ban of 10 secons
   var re = new RegExp(/(http(s)?:\/\/)?\w{2,}\.\w{2,}(\.\w{2,})*/g);
   if(re.test(message.toString())){
-    client.timeout(channel, user.username, 10).then(function(){
-      client.say(channel,'E da proxima vez, @' + user.username.toString() + ' vai mandar link na stream da sua avó!');
-    });
+    client.timeout(channel, user.username, 10);
   }
   var msg = message.toLowerCase();
   switch(true){
@@ -75,6 +74,10 @@ client.addListener('chat',function(channel,user,message){
           return;
         }
         if(!doc.isSelected('bio')){
+          return;
+        }
+        console.log('entrou');
+        if(typeof doc.bio == null){
           return;
         }
         client.say(channel, doc.bio);
