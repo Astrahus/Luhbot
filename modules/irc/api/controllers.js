@@ -1,44 +1,49 @@
 var client = require('../../../config/irc');
 var io = require('../../../config/io');
+var redis = require('../../../config/redis');
 var _user = require('../../users/model');
 var twitch = require('../../twitch/api/controllers');
 var request = require('request');
 var profile = 0;
-var statusLuhbot = false;
-
-var toasts = io.of('/toasts').on('connection',function(socket){
+var statusLuhbot = null;
+var alerts = io.on('connection',function(socket){
   return socket;
 });
 
-client.connect().then(function(){
-  console.log('luhbot conectado');
-});
+function getLuhbotStatus(userId){
+  return redis.hget(userId,'status',function(reply){
+    return reply;
+  });
+}
+
+client.connect();
 
 client.addListener('connected',function(adress,port){
-  toasts.emit('newMessage',{msg:'Conectado'});
+  alerts.emit('newMessage',{msg:'Conectado'});
 });
 
 client.addListener('disconnected',function(reason){
-  toasts.emit('newMessage',{msg:'Luhbot desconectado'});
-  console.log('desconectado',reason)
+  alerts.emit('newMessage',{msg:'Luhbot desconectado'});
 });
 
 client.addListener('connectfail',function(){
-  toasts.emit('newMessage',{msg:'Luhbot não conseguiu se conectar'});
+  alerts.emit('newMessage',{msg:'Luhbot não conseguiu se conectar'});
 });
 
 client.addListener('pong',function(l){
-  toasts.emit('newMessage',{msg:'Latência luhbot :'+ l});
+  alerts.to(profile).emit('newMessage',{msg:'Latência luhbot :'+ l});
+  console.log(profile);
 });
 
 client.addListener('join',function(channel,username){
   client.say(channel, "Olar! sou a "+ username + " e vim amar vocês *-*");
-  toasts.emit('newMessage',{msg:'Luhbot entrou na sala'});
+  console.log(profile);
+  alerts.to(profile).emit('newMessage',{msg:'Luhbot entrou na sala'});
 });
 
 client.addListener('chat',function(channel,user,message){
   if(!statusLuhbot){
-    return false;
+    return;
   }
   if(client.utils.uppercase(message) >= 0.4){
     client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
@@ -83,6 +88,7 @@ client.addListener('chat',function(channel,user,message){
         'Romero brito?',
         'SAMU?!?',
         'Seu **',
+        'Katrina?',
         'Adriano? Alá Juliana! Seu **! Faz isso comigo não velho',
         'Guarapari búzios, é minha arte!',
         'Rave? RAVE? Felipe! Smith! Seu **',
@@ -93,40 +99,39 @@ client.addListener('chat',function(channel,user,message){
       var index = Math.floor(Math.random() * talks.length) ;
       client.say(channel,talks[index]);
       break;
-    default:
-      console.log(message)
-      // client.say(channel, '@'+user.username.toString() + ' disse ' + message.toString());
   }
 });
 
 var _irc = {
   join: function(req, res, next){
-    if(statusLuhbot){
-      res.json({msg:'Luhbot já está conectado'});
-      return;
-    }
-    client.join(req.session.passport.user.twitchUser).then(function(){
+    redis.hget(req.session.passport.user.twitchId,"status",function(err, actualState){
+      if(err){console.log(err)};
+      if(actualState == "on"){
+        res.json({msg:"Luhbot já está conectada"});
+        return;
+      }
+      client.join(req.session.passport.user.twitchUser);
       profile = req.session.passport.user.twitchId;
-      toasts.emit('newMessage',{msg:'Entrando na sala'});
       statusLuhbot = true;
+      redis.hset(profile,"status","on",redis.print);
+      res.status(202).json({msg:"Conectando luhbot no canal"});
     });
-    res.status(202).end();
   },
   ping : function(req, res, next){
-    if(!statusLuhbot){
-      res.json({msg:'Luhbot está desconectado'});
-      return;
-    }
     res.json({msg:'Enviando ping'});
     client.ping();
   },
   disconnect: function(req, res, next){
-    if(!statusLuhbot){
-      res.json({msg:'Luhbot está desconectado'});
+    statusLuhbot = redis.hget(profile,"status",function(err,actualState){
+      return actualState;
+    });
+    if(statusLuhbot == "off"){
+      res.json({msg:'Luhbot já está desconectada'});
       return;
     }
     statusLuhbot = false;
-    res.json({msg:'Luhbot foi desconectado'});
+    redis.hset(req.session.passport.user.twitchId,"status","off",redis.print);
+    res.json({msg:'Luhbot foi desconectada'});
   }
 }
 

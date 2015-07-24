@@ -11,6 +11,7 @@ angular.module('dashboard.directives',[])
           </a>
           <ul>
             <li><a class="btn-floating red waves-effect waves-light tooltipped" data-position="left" data-delay="50" data-tooltip="Ligar" ng-click='ligar()'><i class="material-icons">power_settings_new</i></i></a></li>
+            <li><a class="btn-floating red waves-effect waves-light tooltipped" data-position="left" data-delay="50" data-tooltip="Desligar" ng-click='desconectar()'><i class="material-icons">power_settings_new</i></i></a></li>
             <li><a class="btn-floating green waves-effect waves-light tooltipped" data-position="left" data-delay="50" data-tooltip="Ping" ng-click='ping()'><i class="material-icons">settings_remote</i></a></li>
           </ul>
         </div>
@@ -23,6 +24,36 @@ angular.module('dashboard.directives',[])
       scope.ping = function(){
         BOT.ping();
       }
+      scope.desconectar = function(){
+        BOT.disconnect();
+      }
+    }
+  }
+})
+.directive('twitchChat',function(User){
+  return {
+    scope: {
+      'width' : '=',
+      'height': '='
+    },
+    template: window.multiline(function(){/*
+      <iframe ng-if='channel' frameborder="0"
+        scrolling="true"
+        id="chat_embed"
+        src={{trust(linkChat)}}
+        height="{{height}}"
+        width="{{width}}">
+        </iframe>
+        */
+    }),
+    controller: function($scope,User,$sce){
+      $scope.trust = function(src) {
+        console.log($sce.trustAsResourceUrl(src))
+        return $sce.trustAsResourceUrl(src);
+      }
+      $scope.channel = User.getData('twitchUser');
+      // http://twitch.tv/chat/embed?channel=tunxlol&popout_chat=true
+      $scope.linkChat = "http://www.twitch.tv/" + $scope.channel + "/chat"
     }
   }
 })

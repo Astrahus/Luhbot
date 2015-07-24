@@ -22,7 +22,8 @@ passport.use(new twitchStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
-      redis.set(profile.id, {token: accessToken,profile: profile});
+      redis.hset(profile.id, 'token', accessToken.toString(),redis.print);
+      redis.hset(profile.id, 'name', profile.username.toString(),redis.print);
       User.findOne({twitchId: profile.id}, function(err, user){
         if(err){
           return done(err,null);

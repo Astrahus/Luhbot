@@ -2,14 +2,17 @@ angular.module('luhbot',[
   'ui.router',
   'dashboard'
 ])
-.factory('Toasts',function(){
+.factory('Toasts',function(User){
+  var userId = User.getData('twitchId');
   function makeToast(message){
     Materialize.toast(message, 4000);
   }
   function listenIO(){
-    var messages = io.connect('http://' + window.location.hostname + ':7171/toasts');
-    messages.on('newMessage',function(data){
-      makeToast(data.msg);
+    userId.then(function(id){
+      var messages = io.connect('http://' + window.location.hostname + ':7171')
+      messages.on('newMessage',function(data){
+        makeToast(data.msg);
+      });
     });
   }
   return {
@@ -27,7 +30,6 @@ angular.module('luhbot',[
         Toasts.makeToast(data.msg)
       });
   }
-
   function disconnect(){
     $http.get('/api/irc/turn/off')
       .success(function(data,status){
@@ -59,15 +61,47 @@ angular.module('luhbot',[
 
   return {
     connect : connect,
-    restart: restart,
+    disconnect: disconnect,
     ping : ping
   }
 })
+.factory('User',function($http,$q){
+  var _user = new Object();
+  var df = $q.defer();
+  function getUserApi(){
+    $http.get('/api/users/me')
+      .success(function(data,status){
+        df.resolve(data);
+      })
+      .error(function(data,status){
+        console.error(data);
+        df.reject(data)
+      });
+      return df.promise;
+  }
+  function retrieveUserData(property){
+    if(!Object.keys(_user).length){
+      return getUserApi().then(function(data){
+        _user = data;
+        if(property){
+          return _user[property];
+        }
+        return _user;
+      });
+      ;
+    }
+    if(property){
+      return _user[property];
+    }
+    return _user;
+  }
+  return {
+    getData: retrieveUserData
+  }
+})
 .config(function($urlRouterProvider){
-
   $urlRouterProvider.otherwise('/dashboard');
 })
-
 .run(function(Toasts){
   Toasts.listenIO();
-})
+});
