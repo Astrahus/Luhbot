@@ -32,12 +32,11 @@ client.addListener('connectfail',function(){
 
 client.addListener('pong',function(l){
   alerts.to(profile).emit('newMessage',{msg:'Latência luhbot :'+ l});
-  console.log(profile);
 });
 
 client.addListener('join',function(channel,username){
   client.say(channel, "Olar! sou a "+ username + " e vim amar vocês *-*");
-  console.log(profile);
+  client.say(channel, "/color BlueViolet");
   alerts.to(profile).emit('newMessage',{msg:'Luhbot entrou na sala'});
 });
 
@@ -45,7 +44,8 @@ client.addListener('chat',function(channel,user,message){
   if(!statusLuhbot){
     return;
   }
-  if(client.utils.uppercase(message) >= 0.4){
+  if(client.utils.uppercase(message) >= 0.8){
+    client.timeout(channel, user.username, 1);
     client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
     return;
   }
