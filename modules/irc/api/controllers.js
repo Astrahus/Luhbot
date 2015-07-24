@@ -41,13 +41,12 @@ client.addListener('join',function(channel,username){
 });
 
 client.addListener('chat',function(channel,user,message){
-  console.log(user);
   if(!statusLuhbot){
     return;
   }
   if(client.utils.uppercase(message) >= 0.8){
     client.timeout(channel, user.username, 1).then(function(){
-      client.say(channel, "@"+ user.username.toString() + " Ó U BAN VINO LEEEEEK");
+      client.say(channel, "@"+ user.username.toString() + "evite usar caps");
     })
     return;
   }
@@ -73,11 +72,7 @@ client.addListener('chat',function(channel,user,message){
           console.log(err);
           return;
         }
-        if(!doc.isSelected('bio')){
-          return;
-        }
-        console.log('entrou');
-        if(typeof doc.bio == null){
+        if(!doc.isSelected('bio') || doc.bio == null){
           return;
         }
         client.say(channel, doc.bio);
