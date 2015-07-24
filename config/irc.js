@@ -7,7 +7,8 @@ var toasts = io.of('/toasts').on('connection',function(socket){
 var clientOptions = {
     options: {
         debug: true,
-        debugIgnore: ['ping', 'chat', 'action']
+        debugIgnore: ['ping', 'chat', 'action'],
+        tc: 3
     },
     identity: {
         username: 'Luhbot',
