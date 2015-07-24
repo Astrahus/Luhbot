@@ -41,7 +41,7 @@ client.addListener('join',function(channel,username){
 });
 
 client.addListener('chat',function(channel,user,message){
-  client.mods('channel').then(function(mods) {
+  client.mods(channel).then(function(mods) {
     console.log(mods);
     // Do something else..
   });
