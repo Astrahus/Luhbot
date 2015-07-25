@@ -6,6 +6,12 @@ var twitch = require('../../twitch/api/controllers');
 var request = require('request');
 var profile = 0;
 var statusLuhbot = null;
+var chatDelayControl = {
+  luhzinha : false,
+  eu: false,
+  subscribers: false,
+  patrocinador: false
+}
 var alerts = io.on('connection',function(socket){
   return socket;
 });
@@ -41,33 +47,56 @@ client.addListener('join',function(channel,username){
 });
 
 client.addListener('chat',function(channel,user,message){
+  //iff luhbot off
   if(!statusLuhbot){
     return;
   }
-  if(client.utils.uppercase(message) >= 0.8){
-    client.timeout(channel, user.username, 1).then(function(){
-      client.say(channel, "@"+ user.username.toString() + "evite usar caps");
-    })
-    return;
+  //Users chat controll
+
+  if(user.special.indexOf('mod') == -1 && user.special.indexOf('broadcaster') == -1 ){
+    if(client.utils.uppercase(message) >= 0.8){
+      client.timeout(channel, user.username, 10).then(function(){
+        client.say(channel, "@"+ user.username.toString() + " evite usar caps");
+      });
+      return;
+    }
+    //if link, ban of 10 secons
+    var re = new RegExp(/(http(s)?:\/\/)?\w{2,}\.\w{2,}(\.\w{2,})*/g);
+    if(re.test(message.toString())){
+      client.timeout(channel, user.username, 10);
+      return;
+    }
   }
-  //if link, ban of 10 secons
-  var re = new RegExp(/(http(s)?:\/\/)?\w{2,}\.\w{2,}(\.\w{2,})*/g);
-  if(re.test(message.toString())){
-    client.timeout(channel, user.username, 10);
-  }
-  var msg = message.toLowerCase();
+  var msg = message.toLowerCase().split(' ');
+  //switch of global enabled actions
   switch(true){
-    case msg.split(' ').indexOf('!luhzinha') >= 0:
-      client.say(channel,"Facebook: https://www.facebook.com/Luhzinhapage https://twitter.com/Luhzinhaluna https://www.youtube.com/user/luhzinhaplayer https://instagram.com/luhzinhaluna/");
-      break;
-    case msg.split(' ').indexOf('!subscribers') >= 0:
-      client.say(channel,"Seja um subscriber! Subscribers tem direito a sorteios de jogos da steam, prioridade para jogar na live e um teamspeak para falar com a Luhzinha.");
-      break;
-    case msg.split(' ').indexOf('!patrocinador') >= 0:
+    case msg.indexOf('!luhzinha') >= 0:
+      if(!chatDelayControl.luhzinha){
+        chatDelayControl.luhzinha = true;
+        client.say(channel,"Facebook: https://www.facebook.com/Luhzinhapage https://twitter.com/Luhzinhaluna https://www.youtube.com/user/luhzinhaplayer https://instagram.com/luhzinhaluna/");
+        setTimeout(function(){
+            chatDelayControl.luhzinha = false;
+        },10);
+      }
+    break;
+
+    case msg.indexOf('!subscribers') >= 0:
+      if(!chatDelayControl.subscribers){
+        chatDelayControl.subscribers = true;
+        client.say(channel,"Seja um subscriber! Subscribers tem direito a sorteios de jogos da steam, prioridade para jogar na live e um teamspeak para falar com a Luhzinha.");
+        setTimeout(function(){
+            chatDelayControl.subscribers = false;
+        },10);
+      }
+    break;
+
+    case msg.indexOf('!patrocinador') >= 0:
       client.say(channel," Quer comprar um jogo ou um console por um preço bacana? Entra aqui na loja LFX games e use o cupom LUHZINHA (tudo maiúsculo) e ganhe 10% de desconto na sua compra <3 http://www.lfxgames.com.br/");
-      break;
-    case msg.split(' ').indexOf('!eu') >= 0:
+    break;
+
+    case msg.indexOf('!eu') >= 0:
       _user.findOne({twitchId: profile}, function(err,doc){
+        console.log(doc)
         if(err || !doc ){
           console.log(err);
           return;
@@ -77,11 +106,13 @@ client.addListener('chat',function(channel,user,message){
         }
         client.say(channel, doc.bio);
       });
-      break;
-    case msg.split(' ').indexOf('!ping') >= 0:
+    break;
+
+    case msg.indexOf('!ping') >= 0:
       client.say(channel,'@'+ user.username + ', pong');
-      break;
-    case msg.split(' ').indexOf('@luhbot') >= 0:
+    break;
+
+    case msg.indexOf('@luhbot') >= 0:
       var talks = [
         'Oiii tudo bem amore?',
         'Você fala muito :(',
@@ -100,7 +131,12 @@ client.addListener('chat',function(channel,user,message){
       ];
       var index = Math.floor(Math.random() * talks.length) ;
       client.say(channel,talks[index]);
-      break;
+    break;
+
+    case msg.indexOf('!enquete') == [0]:
+      //make a
+      client.say(channel,'Enquete em desenvolvimento');
+    break;
   }
 });
 

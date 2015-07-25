@@ -3,8 +3,7 @@ var irc = require('twitch-irc');
 var clientOptions = {
     options: {
         debug: true,
-        debugIgnore: ['ping', 'chat', 'action'],
-        tc: 2
+        debugIgnore: ['ping', 'chat', 'action']
     },
     identity: {
         username: 'Luhbot',
