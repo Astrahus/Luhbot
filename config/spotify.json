@@ -1,0 +1,9 @@
+{
+  "client": {
+    "id":"f6a9afcc7202485286bd2f56b77bdddc",
+    "secret":"fef18cb8690f4c529540526b4493f37a"
+  },
+  "scopes": [],
+  "redirect_uri": "http://localhost:3000/auth/spotify/callback"
+
+}

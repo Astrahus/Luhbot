@@ -53,11 +53,13 @@ var routes = {};
 routes.main = require('./modules/main/index');
 routes.auth = require('./modules/main/auth');
 routes.dashboard = require('./modules/dashboard/routes');
+routes.spotify = require('./modules/spotify/routes');
+
 var api = {};
 api.users = require('./modules/users/api/routes');
 api.irc = require('./modules/irc/api/routes');
 api.twitch = require('./modules/twitch/api/routes');
-var io = require('./config/io.js')
+api.spotify = require('./modules/spotify/api/routes');
 
 app.use('/', routes.main);
 app.use('/auth',routes.auth);
@@ -66,6 +68,7 @@ app.use('/dashboard',routes.dashboard);
 app.use('/api/users',api.users);
 app.use('/api/irc',api.irc);
 app.use('/api/twitch',api.twitch);
+app.use('/api/spotify', api.spotify)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
