@@ -12,7 +12,15 @@ var chatDelayControl = {
   subscribers: false,
   patrocinador: false
 }
-var alerts = io.on('connection',function(socket){
+var alerts = io.of('alerts').on('connection',function(socket){
+  socket.on('joinChannel',function(userRoom){
+    socket.join(String('#').concat(userRoom));
+    console.log('Entrando na sala de', userRoom)
+  });
+
+  socket.on('ping',function(userRoom){
+    socket.to(userRoom).emit('newMessage',{msg:'Luhbot está operando normalmente'})
+  })
   return socket;
 });
 
@@ -36,14 +44,11 @@ client.addListener('connectfail',function(){
   alerts.emit('newMessage',{msg:'Luhbot não conseguiu se conectar'});
 });
 
-client.addListener('pong',function(l){
-  alerts.to(profile).emit('newMessage',{msg:'Latência luhbot :'+ l});
-});
 
 client.addListener('join',function(channel,username){
   client.say(channel, "Olar! sou a "+ username + " e vim amar vocês *-*");
   client.say(channel, "/color BlueViolet");
-  alerts.to(profile).emit('newMessage',{msg:'Luhbot entrou na sala'});
+  alerts.to(channel).emit('newMessage',{msg:'Luhbot entrou na sala'});
 });
 
 client.addListener('chat',function(channel,user,message){
@@ -154,10 +159,6 @@ var _irc = {
       redis.hset(profile,"status","on",redis.print);
       res.status(202).json({msg:"Conectando luhbot no canal"});
     });
-  },
-  ping : function(req, res, next){
-    res.json({msg:'Enviando ping'});
-    client.ping();
   },
   disconnect: function(req, res, next){
     statusLuhbot = redis.hget(profile,"status",function(err,actualState){

@@ -17,14 +17,14 @@ angular.module('dashboard.directives',[])
         </div>
       */
     }),
-    link: function(scope,elem, attr){
-      scope.ligar = function(){
+    controller: function($scope,IO){
+      $scope.ligar = function(){
         BOT.connect();
       }
-      scope.ping = function(){
+      $scope.ping = function(){
         BOT.ping();
       }
-      scope.desconectar = function(){
+      $scope.desconectar = function(){
         BOT.disconnect();
       }
     }
@@ -48,7 +48,6 @@ angular.module('dashboard.directives',[])
     }),
     controller: function($scope,User,$sce){
       $scope.trust = function(src) {
-        console.log($sce.trustAsResourceUrl(src))
         return $sce.trustAsResourceUrl(src);
       }
       $scope.channel = User.getData('twitchUser');

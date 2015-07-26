@@ -10,7 +10,6 @@ router.get('/twitch/callback',
     res.redirect('/dashboard#/');
   }
 );
-
 router.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');

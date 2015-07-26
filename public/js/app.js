@@ -2,22 +2,46 @@ angular.module('luhbot',[
   'ui.router',
   'dashboard'
 ])
-.factory('Toasts',function(User){
-  var userId = User.getData('twitchId');
+.factory('IO',function(Toasts){
+  var IO = function(){
+    this.namespace = null;
+    this.socket = {};
+    var self = this;
+
+    this.connect = function(namespace){
+      if(namespace){
+        this.namespace = String('/').concat(namespace);
+        this.socket = io.connect(String("http://").concat(window.location.hostname).concat(':7171').concat(this.namespace));
+        return this;
+      }
+      this.socket = io.connect(String("http://").concat(window.location.hostname).concat(':7171').concat(this.namespace));
+      return this;
+    }
+
+    this.listenNewMessages = function(){
+      this.socket.on('newMessage',function(data){
+        Toasts.makeToast(data.msg);
+      });
+      return this;
+    }
+
+    this.joinChannel = function(channel){
+      this.socket.emit('joinChannel', channel);
+      console.log('join')
+      return this;
+    }
+
+    return this;
+  }
+  return new IO;
+})
+.factory('Toasts',function(){
+
   function makeToast(message){
     Materialize.toast(message, 4000);
   }
-  function listenIO(){
-    userId.then(function(id){
-      var messages = io.connect('http://' + window.location.hostname + ':7171')
-      messages.on('newMessage',function(data){
-        makeToast(data.msg);
-      });
-    });
-  }
   return {
-    makeToast: makeToast,
-    listenIO : listenIO
+    makeToast: makeToast
   }
 })
 .factory('BOT',function($http,Toasts){
@@ -103,6 +127,8 @@ angular.module('luhbot',[
 .config(function($urlRouterProvider){
   $urlRouterProvider.otherwise('/dashboard');
 })
-.run(function(Toasts){
-  Toasts.listenIO();
+.run(function(IO, User){
+  User.getData('twitchUser').then(function(channel){
+    IO.connect('alerts').listenNewMessages().joinChannel(channel);
+  });
 });
