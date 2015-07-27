@@ -1,6 +1,13 @@
 # Luhbot
 A bot and test case using Twitch API and SDK for make a bot
 
+## Features
+- user timeout when he post a link
+- !eu - Show the current user bio
+- !ping - Check if the bot is online. Should response @username, pong
+- @luhbot - Say some random word from the talks var
+- !enquete - Open a poll on the chat!
+
 ##References about Twitch.TV API
 
 ### JS SDK
