@@ -131,6 +131,7 @@ client.addListener('chat',function(channel,user,message){
     break;
 
     case msg.indexOf('@luhbot') >= 0:
+    //TODO: Make all feel talks
       var talks = {
         commom : [
           'Oiii tudo bem amore?',
@@ -156,7 +157,7 @@ client.addListener('chat',function(channel,user,message){
 
         ]
       }
-
+      //TODO: Migrate feel
       var allTalks = {
         commom : {
           happy: [

@@ -2,6 +2,7 @@ angular.module('luhbot',[
   'ui.router',
   'dashboard'
 ])
+//TODO: Persistance of socket
 .factory('IO',function(Toasts){
   var IO = function(){
     this.namespace = null;
