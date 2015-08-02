@@ -25,14 +25,17 @@ module.exports = {
   },
   getSubscriptions: function(req,res,next){
     redis.hget(req.session.passport.user.twitchId,'token', function(err, reply){
-      headers.Authorization = String('Oauth ').concat(reply);   
+      headers.Authorization = String('OAuth ').concat(reply);   
       request({
         url:defaultUrl+ 'channels/' + req.session.passport.user.twitchUser + '/subscriptions?direction=desc',
         headers: headers
       },function(err,response,body){
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
-          console.log(body.error);
+          if(response.statusCode === 422){
+            res.status(422).json([]);
+            return;
+          }
           res.status(500).end();
           return;
         };
@@ -42,7 +45,7 @@ module.exports = {
   },
   getLastSubscription: function(req, res, next){
     redis.hget(req.session.passport.user.twitchId,'token',function(err,reply){
-      headers.Authorization = String('Oauth ').concat(reply);
+      headers.Authorization = String('OAuth ').concat(reply);
       request({
         url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/suibscriptions?directions=desc&limit=1',
         headers: headers
@@ -50,8 +53,15 @@ module.exports = {
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
           console.log(body.error);
-          res.status(500).end();
+          if(response.statusCode == 422){
+            res.status(422).json({});
+            return;
+          }
+          res.status(404).end();
           return;
+        }
+        if(req.params.param.length){
+          res.status(200).send(body.user[req.params.param]).end();
         }
         res.json(body);
       })
