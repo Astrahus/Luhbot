@@ -50,6 +50,8 @@ module.exports = {
         url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/subscriptions?direction=desc&limit=1',
         headers: headers
       },function(err, response, body){
+        
+        console.log(req.params.param)
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
           console.log(body.error);
@@ -60,7 +62,7 @@ module.exports = {
           res.status(404).end();
           return;
         }
-        if(req.params.param.length){
+        if(req.params.param != undefined){
           res.status(200).send(body.user[req.params.param]).end();
         }
         res.json(body);
