@@ -59,7 +59,7 @@ module.exports = {
           res.status(404).end();
           return;
         }
-        if(req.params.param != undefined && body.users.hasOwnProperty){
+        if(req.params.param != undefined && body.users.hasOwnProperty(req.params.param)){
 
           res.status(200).send(body.subscriptions[0].user[req.params.param]).end();
         
