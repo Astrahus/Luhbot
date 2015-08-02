@@ -27,7 +27,7 @@ app.use(session({
   genid: function (req) {
     return uid(15);
   },
-  secret: 'D5w7a9r3f*Cdzdwarf377uk1nkz',
+  secret: 'miau',
   cookie: {
     secure : true,
     expires: 24*60*60*1000
