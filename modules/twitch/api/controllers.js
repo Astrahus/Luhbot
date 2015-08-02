@@ -61,11 +61,11 @@ module.exports = {
         }
         if(req.params.param != undefined && body.users.indexOf(req.params.param) >= 0){
 
-          res.status(200).send(body.subscriptions.[0].user[req.params.param]).end();
+          res.status(200).send(body.subscriptions[0].user[req.params.param]).end();
         
         }
 
-        res.status(200).json(body.subscriptions.[0].user).end();
+        res.status(200).json(body.subscriptions[0].user).end();
 
       });
 
