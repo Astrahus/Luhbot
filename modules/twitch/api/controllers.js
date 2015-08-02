@@ -44,7 +44,7 @@ module.exports = {
     });
   },
   getLastSubscription: function(req, res, next){
-    redis.hget(req.session.passport.user.twitchId,'token',function(err,reply){
+    redis.hget(req.session.passport.user.twitchId, 'token', function(err,reply){
       headers.Authorization = String('OAuth ').concat(reply);
       request({
         url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/subscriptions?direction=desc&limit=1',
@@ -60,20 +60,12 @@ module.exports = {
           return;
         }
         var userData = body.subscriptions[0].user;
-
         if(req.params.param != undefined && userData.hasOwnProperty(req.params.param)){
-
-          res.status(200).send(userData[req.params.param]).end();
+          res.status(200).json(userData[req.params.param]).end();
           return false;
-        
-        }
-
+        } 
         res.status(200).json(userData).end();
-
       });
-
     });
-
   }
-
 }
