@@ -33,6 +33,8 @@ module.exports = {
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
           console.log(body.error);
+          res.status(500).end();
+          return;
         };
         res.json(body);
       });
@@ -48,9 +50,7 @@ module.exports = {
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
           console.log(body.error);
-        }
-        if(req.params.param){
-          res.status(200).send(body.user[req.params.param]).end();
+          res.status(500).end();
           return;
         }
         res.json(body);
