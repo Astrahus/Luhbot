@@ -50,11 +50,10 @@ module.exports = {
         url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/subscriptions?direction=desc&limit=1',
         headers: headers
       },function(err, response, body){
-        
+
         console.log(req.params.param)
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
-          console.log(body.error);
           if(response.statusCode == 422){
             res.status(422).json({});
             return;
@@ -62,9 +61,13 @@ module.exports = {
           res.status(404).end();
           return;
         }
-        if(req.params.param != undefined){
+        console.log(body);
+        if(req.params.param != undefined && body.users.indexOf(req.params.param) >= 0){
+
           res.status(200).send(body.user[req.params.param]).end();
+        
         }
+
         res.json(body);
       })
     });
