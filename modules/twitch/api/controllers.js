@@ -59,13 +59,15 @@ module.exports = {
           res.status(404).end();
           return;
         }
-        if(req.params.param != undefined && body.users.hasOwnProperty(req.params.param)){
+        var userData = body.subscriptions[0].user;
 
-          res.status(200).send(body.subscriptions[0].user[req.params.param]).end();
+        if(req.params.param != undefined && userData.hasOwnProperty(req.params.param)){
+
+          res.status(200).send(userData[req.params.param]).end();
         
         }
 
-        res.status(200).json(body.subscriptions[0].user).end();
+        res.status(200).json(userData).end();
 
       });
 
