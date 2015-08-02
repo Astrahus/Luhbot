@@ -64,6 +64,7 @@ module.exports = {
         if(req.params.param != undefined && userData.hasOwnProperty(req.params.param)){
 
           res.status(200).send(userData[req.params.param]).end();
+          return false;
         
         }
 
