@@ -25,9 +25,9 @@ module.exports = {
   },
   getSubscriptions: function(req,res,next){
     redis.hget(req.session.passport.user.twitchId,'token', function(err, reply){
-      headers.Authorization ='OAuth ' + reply;
+      headers.Authorization = String('Oauth ').concat(reply);   
       request({
-        url:defaultUrl+ 'channels/' + req.session.passport.user.twitchUser + '/subscriptions',
+        url:defaultUrl+ 'channels/' + req.session.passport.user.twitchUser + '/subscriptions?direction=desc',
         headers: headers
       },function(err,response,body){
         body = JSON.parse(body);
@@ -36,6 +36,12 @@ module.exports = {
         };
         res.json(body);
       });
+    });
+  },
+  getLastSubscription: function(req, res, next){
+    redis.hget(req.session.passport.user.twitchId,'token',function(err,reply){
+      headers.Authorization = String('Oauth ').concat(reply);
+      request({})
     });
   }
 }
