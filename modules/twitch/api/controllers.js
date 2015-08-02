@@ -47,7 +47,7 @@ module.exports = {
     redis.hget(req.session.passport.user.twitchId,'token',function(err,reply){
       headers.Authorization = String('OAuth ').concat(reply);
       request({
-        url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/suibscriptions?directions=desc&limit=1',
+        url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/subscriptions?directions=desc&limit=1',
         headers: headers
       },function(err, response, body){
         body = JSON.parse(body);
