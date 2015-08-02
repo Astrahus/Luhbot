@@ -4,6 +4,6 @@ var _ctrl = require('./controllers');
 
 router.get('/update/user', _ctrl.updateUser);
 router.get('/subscriptions/', _ctrl.getSubscriptions);
-router.get('/subscriptions/last', _ctrl.getLastSubscription)
+router.get('/subscriptions/last/param', _ctrl.getLastSubscription);
 
 module.exports = router;

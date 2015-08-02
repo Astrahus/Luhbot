@@ -32,7 +32,7 @@ module.exports = {
       },function(err,response,body){
         body = JSON.parse(body);
         if(err || response.statusCode != 200){
-          console.log(body.error)
+          console.log(body.error);
         };
         res.json(body);
       });
@@ -41,7 +41,20 @@ module.exports = {
   getLastSubscription: function(req, res, next){
     redis.hget(req.session.passport.user.twitchId,'token',function(err,reply){
       headers.Authorization = String('Oauth ').concat(reply);
-      request({})
+      request({
+        url: defaultUrl + 'channels/' + req.session.passport.user.twitchUser + '/suibscriptions?directions=desc&limit=1',
+        headers: headers
+      },function(err, response, body){
+        body = JSON.parse(body);
+        if(err || response.statusCode != 200){
+          console.log(body.error);
+        }
+        if(req.params.param){
+          res.status(200).send(body.user[req.params.param]).end();
+          return;
+        }
+        res.json(body);
+      })
     });
   }
 }
